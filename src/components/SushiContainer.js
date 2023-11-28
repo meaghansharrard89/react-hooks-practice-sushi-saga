@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import MoreButton from "./MoreButton";
 import Sushi from "./Sushi";
 
-function SushiContainer( {sushi, handleClick} ) {
+function SushiContainer( {sushi, eatSushi} ) {
   const [displaySushi, setDisplaySushi] = useState(0);
 
   //number of sushi to display at a time
@@ -22,7 +22,13 @@ function SushiContainer( {sushi, handleClick} ) {
 
   return (
     <div className="belt">
-      {firstFourSushi.map((item) => <Sushi key={item.id} sushi={item}handleClick={handleClick}/>)}
+      {firstFourSushi.map((item) => 
+        <Sushi 
+          key={item.id} 
+          sushi={item}
+          handleClick={eatSushi}
+        />
+        )}
       <MoreButton onClick={handleMoreButtonClick}/>
     </div>
   );

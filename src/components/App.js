@@ -5,8 +5,9 @@ import Table from "./Table";
 const API = "http://localhost:3001/sushis";
 
 function App() {
+  const budget = 50;
   const [sushi, setSushi] = useState([])
-  const [remainingMoney, setRemainingMoney] = useState(50)
+  const [remainingMoney, setRemainingMoney] = useState(budget)
 
   useEffect(() => {
     fetch("http://localhost:3001/sushis")
@@ -14,20 +15,26 @@ function App() {
     .then((data) => setSushi(data))
   }, [])
 
-  function handleClick(currentPrice){
-    setRemainingMoney((remainingMoney) => {
-      if (remainingMoney > 0) {
-        return remainingMoney - currentPrice;
-      } else {
-        alert("You've used all your money!");
-        return remainingMoney;
-      }
-    })}
+  function eatSushi(sush){
+    if (!sush.eaten && (sush.price <= remainingMoney)) {
+      setRemainingMoney(remainingMoney - sush.price) 
+      setSushi(sushi.map(roll => 
+        roll.id !== sush.id
+        ? roll: {...roll, eaten:true}
+      ))
+    }
+    else {return null}
+  }
 
   return (
     <div className="app">
-      <SushiContainer sushi={sushi} handleClick={handleClick}/>
-      <Table remainingMoney={remainingMoney} />
+      <SushiContainer 
+        sushi={sushi} 
+        eatSushi={eatSushi} 
+        />
+      <Table plates={sushi.filter(sushi => sushi.eaten)}
+        remainingMoney={remainingMoney}
+      />
     </div>
   );
 }

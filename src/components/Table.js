@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 function Table({ plates = [], remainingMoney }) {
   // renders an empty plate for every element in the array
